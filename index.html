@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTM Campaign URL Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%; /* Full width */
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .generated-url {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            word-wrap: break-word;
+            cursor: pointer;
+            font-size: 18px; /* Larger font size */
+        }
+
+        .generated-url::before {
+            content: 'Click to copy: ';
+            font-weight: bold;
+        }
+
+        .message {
+            margin-top: 10px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: left;
+            font-size: 14px;
+            color: #666;
+        }
+
+        footer a {
+            color: #28a745;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>UTM Campaign URL Builder</h1>
+
+    <label for="website-url">Website URL *</label>
+    <input type="url" id="website-url" placeholder="https://www.example.com" required>
+
+    <label for="campaign-id">Campaign ID</label>
+    <input type="text" id="campaign-id" placeholder="e.g. campaign_id">
+
+    <label for="campaign-source">Campaign Source *</label>
+    <input type="text" id="campaign-source" placeholder="e.g. google, newsletter" required>
+
+    <label for="campaign-medium">Campaign Medium *</label>
+    <input type="text" id="campaign-medium" placeholder="e.g. cpc, banner, email" required>
+
+    <label for="campaign-name">Campaign Name</label>
+    <input type="text" id="campaign-name" placeholder="e.g. spring_sale">
+
+    <label for="campaign-term">Campaign Term</label>
+    <input type="text" id="campaign-term" placeholder="Identify the paid keywords">
+
+    <label for="campaign-content">Campaign Content</label>
+    <input type="text" id="campaign-content" placeholder="Use to differentiate ads">
+
+    <div class="button-container">
+        <button id="generate-url">Generate URL</button>
+    </div>
+
+    <div class="generated-url" id="generated-url">Click to generate URL</div>
+    <div class="message" id="copy-message"></div>
+
+    <footer>
+        Developed by <a href="https://www.theseocentral.com" target="_blank">The SEO Central</a><br>
+        Check out our other tools:<br>
+        <a href="https://abhinav-krishna-cs.github.io/Gen-URL/" target="_blank">Gen URL Builder</a> |
+        <a href="https://robots-txt-generator.tiiny.site/" target="_blank">Gen-Robo Robots.txt Generator</a>
+    </footer>
+
+    <script>
+        document.getElementById('generate-url').addEventListener('click', function() {
+            const websiteUrl = document.getElementById('website-url').value;
+            const campaignId = document.getElementById('campaign-id').value;
+            const campaignSource = document.getElementById('campaign-source').value;
+            const campaignMedium = document.getElementById('campaign-medium').value;
+            const campaignName = document.getElementById('campaign-name').value;
+            const campaignTerm = document.getElementById('campaign-term').value;
+            const campaignContent = document.getElementById('campaign-content').value;
+
+            if (!websiteUrl || !campaignSource || !campaignMedium) {
+                alert("Please fill out all required fields.");
+                return;
+            }
+
+            let utmUrl = websiteUrl.includes('?') ? websiteUrl : websiteUrl + '?';
+            utmUrl += `utm_source=${encodeURIComponent(campaignSource)}`;
+            utmUrl += `&utm_medium=${encodeURIComponent(campaignMedium)}`;
+
+            if (campaignName) {
+                utmUrl += `&utm_campaign=${encodeURIComponent(campaignName)}`;
+            }
+
+            if (campaignId) {
+                utmUrl += `&utm_id=${encodeURIComponent(campaignId)}`;
+            }
+
+            if (campaignTerm) {
+                utmUrl += `&utm_term=${encodeURIComponent(campaignTerm)}`;
+            }
+
+            if (campaignContent) {
+                utmUrl += `&utm_content=${encodeURIComponent(campaignContent)}`;
+            }
+
+            document.getElementById('generated-url').textContent = utmUrl;
+
+            // Reset the copy message
+            document.getElementById('copy-message').textContent = '';
+        });
+
+        document.getElementById('generated-url').addEventListener('click', function() {
+            const url = document.getElementById('generated-url').textContent.replace('Click to copy: ', '');
+            navigator.clipboard.writeText(url).then(function() {
+                document.getElementById('copy-message').textContent = 'URL copied to clipboard!';
+            });
+        });
+    </script>
+
+</body>
+</html>
